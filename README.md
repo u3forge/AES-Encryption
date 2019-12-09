@@ -1,2 +1,2 @@
-# AssemblyRSA
-RSA Encryption using Assembly 
+# AES Encryption
+AES Encryption using Assembly 
