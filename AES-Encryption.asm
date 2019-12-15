@@ -36,7 +36,7 @@ WriteChar:
 	ret
 
 WriteDec:
-	push 1337
+	push 0xf1a9
 	.next:
 		mov ecx, 10
 		mov edx, 0
@@ -51,7 +51,7 @@ WriteDec:
 	jne .next
 	.print:
 		pop eax
-		cmp eax, 1337
+		cmp eax, 0xf1a9
 		je .done
 		call WriteChar
 		jmp .print
@@ -65,7 +65,7 @@ WriteHex:
 	mov al, 'x'
 	call WriteChar
 	pop eax
-	push 1337
+	push 0xf1a9
 	.next:
 		mov ecx, 16
 		mov edx, 0
@@ -80,7 +80,7 @@ WriteHex:
 	jne .next
 	.print:
 		pop eax
-		cmp eax, 1337
+		cmp eax, 0xf1a9
 		je .done
 		call WriteChar
 		jmp .print
