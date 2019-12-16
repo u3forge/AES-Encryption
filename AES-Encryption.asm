@@ -4,9 +4,15 @@
 global _start
 section .data:
 	val db	0x41
-
+	st db "TEST", 0x0
 section .text:
 _start:
+	mov esi, st
+	mov ecx, 5
+	call WriteString
+
+	mov al, 0xA
+	call WriteChar
 
 	mov eax, 123456
 	call WriteDec
@@ -33,6 +39,16 @@ WriteChar:
 	mov edx, 1		;Printing one byte
 	int 0x80		;Invoke the syscall
 	pop eax			;Clean up the stack
+	ret
+
+WriteString:
+	.print:
+	mov eax, [esi]
+	push ecx
+	call WriteChar
+	pop ecx
+	inc esi
+	loop .print
 	ret
 
 WriteDec:
