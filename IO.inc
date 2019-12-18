@@ -50,6 +50,7 @@ WriteDec:
 
 WriteHex:
     push edx
+    push ecx
 	push eax
 	mov al, '0'
 	call WriteChar
@@ -80,5 +81,6 @@ WriteHex:
 		call WriteChar
 		jmp .print
 	.done:
+    pop ecx
     pop edx
 	ret

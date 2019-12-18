@@ -2,20 +2,20 @@
 ; Link with ld -m elf_i386 AES-Encryption.o -o AES-Encryption
 ; Or just run make like a chad
 %include "IO.inc" ; Custom Written IO library
-%include "SBOX.inc" ; File contining SBOX
-
+%include "Substitution.inc"; Substitution functions
 global _start
 section .data:
-	val db	0x41
-	st db "TEST2", 0x0
+
 section .text:
 _start:
-	mov eax, 5
-	mov ebx, 5
-	call GetSBOXByte
-	movzx eax, dl
+	mov cl, 0x76
+	call GetLowerNibble
+	movzx eax, bl
 	call WriteHex
-	;call PrintSBOX
+	call GetHigherNibble
+	movzx eax, bh
+	call WriteHex
+
 	;Return zero
 	mov eax, 0x1
 	mov ebx, 0

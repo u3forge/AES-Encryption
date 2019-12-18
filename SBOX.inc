@@ -18,7 +18,6 @@ SBOX db 0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 
      db 0x8C, 0xA1, 0x89, 0x0D, 0xBF, 0xE6, 0x42, 0x68, 0x41, 0x99, 0x2D, 0x0F, 0xB0, 0x54, 0xBB, 0x16
 
 SBOXLength dd 16
-
 section .text:
     ; Takes:
     ;   eax: vertical index (i)
@@ -28,7 +27,7 @@ section .text:
     GetSBOXByte:
         push ecx
         xor edx, edx
-        mov ecx, 16
+        mov ecx, [SBOXLength]
         mul ecx
         mov dl, [SBOX+ebx+eax]
         pop ecx
@@ -45,8 +44,8 @@ section .text:
                 mov al, 0x9
                 call WriteChar
                 inc edx
-                cmp edx, 15
-            jle .horizontalLoop
+                cmp edx, [SBOXLength]
+            jl .horizontalLoop
             mov al, 0xA
             call WriteChar
             add ebx, [SBOXLength]
