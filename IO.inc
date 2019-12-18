@@ -1,5 +1,8 @@
 section .text:
 WriteChar:
+    push ecx
+    push edx
+    push ebx
 	push eax       	;Store parameter on the stack
 	mov ecx, esp	;Get address of the parameter
 	mov eax, 0x4	;Specifying the write syscall
@@ -7,6 +10,9 @@ WriteChar:
 	mov edx, 1		;Printing one byte
 	int 0x80		;Invoke the syscall
 	pop eax			;Clean up the stack
+    pop ebx
+    pop edx
+    pop ecx
 	ret
 
 WriteString:
@@ -43,6 +49,7 @@ WriteDec:
 	ret
 
 WriteHex:
+    push edx
 	push eax
 	mov al, '0'
 	call WriteChar
@@ -55,7 +62,7 @@ WriteHex:
 		mov edx, 0
 		div ecx
         cmp dl, 10
-        jle .zeroto9
+        jl  .zeroto9
             add dl, 0x7
         .zeroto9:
 		add dl, 0x30
@@ -73,4 +80,5 @@ WriteHex:
 		call WriteChar
 		jmp .print
 	.done:
+    pop edx
 	ret

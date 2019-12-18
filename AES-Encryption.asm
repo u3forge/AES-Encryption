@@ -10,11 +10,12 @@ section .data:
 	st db "TEST2", 0x0
 section .text:
 _start:
-	
-	mov al, [SBOX+1]
+	mov eax, 5
+	mov ebx, 5
+	call GetSBOXByte
+	movzx eax, dl
 	call WriteHex
-
-
+	;call PrintSBOX
 	;Return zero
 	mov eax, 0x1
 	mov ebx, 0
