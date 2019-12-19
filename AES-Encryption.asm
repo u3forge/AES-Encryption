@@ -1,9 +1,10 @@
 ; Assembly with  nasm -f elf AES-Encryption.asm
 ; Link with ld -m elf_i386 AES-Encryption.o -o AES-Encryption
 ; Or just run make like a chad
-%include "IO.inc" ; Custom Written IO library
-%include "Substitution.inc"; Substitution functions
-%include "RowRotation.inc"
+%include "IO.inc" 			; Custom Written IO library
+%include "Substitution.inc"	; Substitution functions
+%include "RowRotation.inc"	; Rotation functions
+%include "ColumnMixing.inc"	; Column mixing functions
 global _start
 
 section .data
@@ -12,6 +13,10 @@ encrypted TIMES 16 db 0
 
 section .text
 _start:
+	mov dl, 0xbf
+	call AdvancedMultiplyByThree
+	movzx eax, dl
+	call WriteHex
 
 	mov ecx, 16
 	mov esi, message
