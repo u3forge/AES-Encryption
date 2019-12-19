@@ -37,9 +37,49 @@ section .text
         call AdvancedMultiplyByTwo
         xor dl, dh
         ret
-        
+
     ; Takes:
     ;   esi: address of the message
     ; Mixed the columns of the message in place
     MixColumns:
+        mov eax, 0
+        mov ebx, 0
+        mov ecx, 0
+        .rows:
+            call GetGaliosNumber
+            cmp dl, 2
+            jne .three
+            shl ebx, 2
+            add eax, ebx
+            mov dl, [esi + eax]
+            call AdvancedMultiplyByTwo
+            movzx edx, dl
+            xor ecx, edx
+            sub eax, ebx
+            shr ebx, 2
+            jmp .done
+            .three: cmp dl, 3
+            jne .one
+            shl ebx, 2
+            add eax, ebx
+            mov dl, [esi + eax]
+            call AdvancedMultiplyByThree
+            movzx edx, dl
+            xor ecx, edx
+            sub eax, ebx
+            shr ebx, 2
+            jmp .done
+            .one:
+            shl ebx, 2
+            add eax, ebx
+            mov dl, [esi + eax]
+            movzx edx, dl
+            xor ecx, edx
+            sub eax, ebx
+            shr ebx, 2
+            .done:
+            inc ebx
+        cmp ebx, 4
+        jl .rows
+        mov [esi], cl
         ret

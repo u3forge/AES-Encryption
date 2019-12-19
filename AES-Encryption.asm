@@ -3,7 +3,7 @@
 ; Or just run make like a chad
 %include "IO.inc" 			; Custom Written IO library
 %include "Substitution.inc"	; Substitution functions
-%include "RowRotation.inc"	; Rotation functions
+%include "Rotation.inc"	; Rotation functions
 %include "ColumnMixing.inc"	; Column mixing functions
 global _start
 
@@ -13,10 +13,6 @@ encrypted TIMES 16 db 0
 
 section .text
 _start:
-	mov dl, 0xbf
-	call AdvancedMultiplyByThree
-	movzx eax, dl
-	call WriteHex
 
 	mov ecx, 16
 	mov esi, message
@@ -24,18 +20,29 @@ _start:
 	call SubstituteMessage
 	mov esi, encrypted
 	call RotateMessage
-	
+	mov esi, encrypted
+	call MixColumns
 
 	;Print the substituted message
 	mov edi, encrypted
+	mov bl, 0
 	mov ecx, 16
 	.L1:
 		xor eax, eax
 		mov al, [edi]
 		call WriteHex
 		inc edi
+		inc bl
+		cmp bl, 4
+		jne .next
 		mov al, 0xA
 		call WriteChar
+		mov bl, 0
+		jmp .done
+		.next:
+		mov al, ' '
+		call WriteChar
+		.done:
 	loop .L1
 
 	;Return zero
