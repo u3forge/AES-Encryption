@@ -1,4 +1,6 @@
 section .text
+;Takes:
+;	al: char
 WriteChar:
     push ecx
     push edx
@@ -15,16 +17,20 @@ WriteChar:
     pop ecx
 	ret
 
+;Takes:
+;	esi: address of the string
+;	ecx: length of the string
 WriteString:
 	.print:
 	mov eax, [esi]
-	push ecx
 	call WriteChar
-	pop ecx
 	inc esi
 	loop .print
 	ret
 
+;Takes:
+;	eax: value
+;Prints the value in decimal (base-10)
 WriteDec:
 	push 0xf1a9
 	.next:
@@ -48,6 +54,9 @@ WriteDec:
 	.done:
 	ret
 
+;Takes:
+;	eax: value
+;Prints the value in hexa (base-16)
 WriteHex:
     push edx
     push ecx
