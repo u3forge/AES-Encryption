@@ -9,22 +9,24 @@ global _start
 
 section .data
 message db 0x19, 0xa0, 0x9a, 0xe9, 0x3d, 0xf4, 0xc6, 0xf8, 0xe3, 0xe2, 0x8d, 0x48, 0xbe, 0x2b, 0x2a, 0x08
-encrypted TIMES 16 db 0
+SubstitutedMessage TIMES 16 db 0
+mixedMessage TIMES 16 db 0
 
 section .text
 _start:
 
 	mov ecx, 16
 	mov esi, message
-	mov edi, encrypted
+	mov edi, SubstitutedMessage
 	call SubstituteMessage
-	mov esi, encrypted
+	mov esi, SubstitutedMessage
 	call RotateMessage
-	mov esi, encrypted
+	mov esi, SubstitutedMessage
+	mov edi, mixedMessage
 	call MixColumns
 
-	;Print the substituted message
-	mov edi, encrypted
+	;Print the SubstitutedMessage message
+	mov edi, mixedMessage
 	mov bl, 0
 	mov ecx, 16
 	.L1:
