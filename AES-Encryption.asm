@@ -17,8 +17,8 @@ _start:
 	mov esi, message
 	mov edi, encrypted
 	call SubstituteMessage
-	mov edx,encrypted
-	call RotationMessage
+	mov esi, encrypted
+	call RotateMessage
 	
 
 	;Print the substituted message

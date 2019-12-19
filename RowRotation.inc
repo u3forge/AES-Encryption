@@ -1,45 +1,54 @@
-section .data
-tmp dd 0
-
 section .text
 
-;edx : array
-;esi : row start index
-;edi : rotation number
-
+;Takes:
+;   edx: Row Start index
+;   esi: Source and Desination message
+;   edi: Number of rotations
 RowRot:
-    
+    push edi
     mov ecx,edi
-    mov [tmp],esi
-    .rotnum
+    push edx
+    .rotnum:
         mov edi,ecx
         mov ecx,3
-        mov esi,[tmp]
-        mov bl,[edx+esi] 
+        mov edx,[esp]
+        mov bl,[esi+edx] 
         .rot:
-            mov al,[edx+esi+1]
+            mov al,[esi+edx+1]
             mov [esi+edx],al
-            inc esi
+            inc edx
         loop .rot
-        mov [edx+esi],bl
+        mov [esi+edx],bl
         mov ecx,edi
     loop .rotnum    
+    pop edx
+    pop edi
     ret
 
-RotationMessage:
-    ;second row rotate 1
-	mov esi,4
-	mov edi,1
-    call RowRot
-    
-	;third row rotate 2
-	mov esi,8
-	mov edi,2
-	call RowRot
+;Takes:
+;   esi: Source and Desination message
+RotateMessage:
 
-	;fourth row rotate 3
-	mov esi,12
-	mov edi,3
-	call RowRot
+	mov edx,4
+	mov edi,1
+    .rotate:
+        call RowRot
+        add edx, 4
+        inc edi
+    cmp edi, 4
+    jl .rotate
+    ; ;second row rotate 1
+
+    ; call RowRot
+    
+	; ;third row rotate 2
+	; mov edx,8
+	; mov edi,2
+	; call RowRot
+
+	; ;fourth row rotate 3
+	; mov edx,12
+	; mov edi,3
+	; call RowRot
 
     ret
