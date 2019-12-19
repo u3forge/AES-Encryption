@@ -4,7 +4,8 @@ section .text
 ;   edx: Row Start index
 ;   esi: Source and Desination message
 ;   edi: Number of rotations
-RowRot:
+;   bh : increment 1 for row rot 4 for column rot
+Rot:
     push edi
     mov ecx,edi
     push edx
@@ -14,9 +15,11 @@ RowRot:
         mov edx,[esp]
         mov bl,[esi+edx] 
         .rot:
-            mov al,[esi+edx+1]
+            add dl,bh
+            mov al,[esi+edx]
+            sub dl,bh
             mov [esi+edx],al
-            inc edx
+            add dl,bh
         loop .rot
         mov [esi+edx],bl
         mov ecx,edi
@@ -31,8 +34,9 @@ RotateMessage:
 
 	mov edx,4
 	mov edi,1
+    mov bh,1
     .rotate:
-        call RowRot
+        call Rot
         add edx, 4
         inc edi
     cmp edi, 4
