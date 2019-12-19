@@ -3,7 +3,7 @@
 ; Or just run make like a chad
 %include "IO.inc" ; Custom Written IO library
 %include "Substitution.inc"; Substitution functions
-
+%include "RowRotation.inc"
 global _start
 
 section .data
@@ -17,6 +17,9 @@ _start:
 	mov esi, message
 	mov edi, encrypted
 	call SubstituteMessage
+	mov edx,encrypted
+	call RotationMessage
+	
 
 	;Print the substituted message
 	mov edi, encrypted
