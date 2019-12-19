@@ -19,33 +19,20 @@ _start:
 	mov esi, message
 	mov edi, SubstitutedMessage
 	call SubstituteMessage
+	
 	mov esi, SubstitutedMessage
 	call RotateMessage
+	call Print4x4Matrix
+
+	mov al, 0xA
+	call WriteChar
+	
 	mov esi, SubstitutedMessage
 	mov edi, mixedMessage
 	call MixColumns
 
-	;Print the SubstitutedMessage message
-	mov edi, mixedMessage
-	mov bl, 0
-	mov ecx, 16
-	.L1:
-		xor eax, eax
-		mov al, [edi]
-		call WriteHex
-		inc edi
-		inc bl
-		cmp bl, 4
-		jne .next
-		mov al, 0xA
-		call WriteChar
-		mov bl, 0
-		jmp .done
-		.next:
-		mov al, ' '
-		call WriteChar
-		.done:
-	loop .L1
+	mov esi, mixedMessage
+	call Print4x4Matrix
 
 	;Return zero
 	mov eax, 0x1

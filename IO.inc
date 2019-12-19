@@ -95,3 +95,28 @@ WriteHex:
     pop ecx
     pop edx
 	ret
+
+; Takes:
+;	esi: array of length 16
+; Prints the array as a 4x4 grid
+Print4x4Matrix:
+	mov bl, 0
+	mov ecx, 16
+	.print:
+		xor eax, eax
+		mov al, [esi]
+		call WriteHex
+		inc esi
+		inc bl
+		cmp bl, 4
+		jne .next
+		mov al, 0xA
+		call WriteChar
+		mov bl, 0
+		jmp .done
+		.next:
+		mov al, ' '
+		call WriteChar
+		.done:
+	loop .print
+	ret
