@@ -37,18 +37,4 @@ RotateMessage:
         inc edi
     cmp edi, 4
     jl .rotate
-    ; ;second row rotate 1
-
-    ; call RowRot
-    
-	; ;third row rotate 2
-	; mov edx,8
-	; mov edi,2
-	; call RowRot
-
-	; ;fourth row rotate 3
-	; mov edx,12
-	; mov edi,3
-	; call RowRot
-
     ret
