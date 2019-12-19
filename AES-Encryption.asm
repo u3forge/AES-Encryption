@@ -3,7 +3,7 @@
 ; Or just run make like a chad
 %include "IO.inc" 			; Custom Written IO library
 %include "Substitution.inc"	; Substitution functions
-%include "Rotation.inc"	; Rotation functions
+%include "Rotation.inc"		; Rotation functions
 %include "ColumnMixing.inc"	; Column mixing functions
 global _start
 
