@@ -30,7 +30,37 @@ ReadChar:
 	mov al, BYTE [esp] 	;Move the read value into al
 	add esp, 4			;Clean up the stack
 	ret
-	
+
+; Takes:
+;	ecx: String maximum length
+;	esi: address of the string
+; Returns:
+;	eax: number of bytes read
+ReadString:
+	push esi
+	push ecx
+	mov eax, 3		;sys_read systemcall
+	mov ebx, 0		;STDIN file descriptor
+	mov edx, ecx	;Reading n bytes
+	mov ecx, esi	;move the allocated dword address to ecx
+	int 80h			;Invoke the syscall
+	pop ecx
+	pop esi
+
+	mov eax, 0
+	.count:
+	inc eax
+	inc esi
+	cmp eax, ecx
+	je .equal
+	cmp BYTE [esi], 0xA
+	je .done
+	jmp .count
+	.equal:
+		mov eax, ecx
+	.done:
+	ret
+
 WriteLine:
 	mov al, 0xA
 	call WriteChar
