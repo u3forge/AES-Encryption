@@ -24,8 +24,7 @@ _start:
 	call RotateMessage
 	call Print4x4Matrix
 
-	mov al, 0xA
-	call WriteChar
+	call WriteLine
 	
 	mov esi, SubstitutedMessage
 	mov edi, mixedMessage

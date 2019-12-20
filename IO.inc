@@ -1,5 +1,5 @@
 section .text
-;Takes:
+; Takes:
 ;	al: char
 WriteChar:
     push ecx
@@ -17,7 +17,26 @@ WriteChar:
     pop ecx
 	ret
 
-;Takes:
+; Returns:
+;	al: value of the char
+ReadChar:
+	sub esp, 4		;allocate a dword on the stack
+   	mov eax, 3		;sys_read systemcall
+   	mov ebx, 0		;STDIN file descriptor
+   	mov ecx, esp	;move the allocated dword address to ecx
+   	mov edx, 1		;Reading one byte
+   	int 80h			;Invoke the syscall
+
+	mov al, BYTE [esp] 	;Move the read value into al
+	add esp, 4			;Clean up the stack
+	ret
+	
+WriteLine:
+	mov al, 0xA
+	call WriteChar
+	ret
+
+; Takes:
 ;	esi: address of the string
 ;	ecx: length of the string
 WriteString:
@@ -28,9 +47,9 @@ WriteString:
 	loop .print
 	ret
 
-;Takes:
+; Takes:
 ;	eax: value
-;Prints the value in decimal (base-10)
+; Prints the value in decimal (base-10)
 WriteDec:
 	push 0xf1a9
 	.next:
@@ -54,9 +73,9 @@ WriteDec:
 	.done:
 	ret
 
-;Takes:
+; Takes:
 ;	eax: value
-;Prints the value in hexa (base-16)
+; Prints the value in hexa (base-16)
 WriteHex:
     push edx
     push ecx
