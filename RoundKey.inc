@@ -7,6 +7,7 @@ RoundKeys TIMES 176 db 0
 ; TODO: Optimise this shit :D 
 column1 db 1,1,1,1
 column2 db 2,2,2,2
+
 section .text
 
 ; Takes:
@@ -150,22 +151,24 @@ CreateRoundKeys:
         jmp .next
         .NotAFirstColumn:
             mov eax, ecx
-            sub eax, 1
             mov ebx, 0
-            mov esi, RoundKeys
-            mov edi, column1
-            mov edx, 44
-            call GetColumn
-            xor ebx, [column1]
-            
-            
-            sub eax, 3
-            mov esi, RoundKeys
-            mov edi, column1
-            mov edx, 44
-            call GetColumn
-
-            xor ebx, [column1]
+            mov ecx, 2
+            .GetTheNextColumns:
+                push ecx
+                cmp ecx, 2
+                je .sub1
+                    sub eax, 3
+                    jmp .done
+                .sub1:
+                    sub eax, 1
+                .done:
+                mov esi, RoundKeys
+                mov edi, column1
+                mov edx, 44
+                call GetColumn
+                xor ebx, [column1]
+                pop ecx
+            loop .GetTheNextColumns
             mov [column1], ebx
 
             add eax, 4
