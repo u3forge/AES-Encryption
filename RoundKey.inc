@@ -17,6 +17,7 @@ section .text
 GetColumn:
     push edi
     push eax
+    push ebx
     mov ecx, 4
     .next:
         mov bl, BYTE [esi + eax]
@@ -24,6 +25,7 @@ GetColumn:
         inc edi
         add eax, edx
     loop .next
+    pop ebx
     pop eax
     pop edi
     ret
@@ -46,37 +48,12 @@ PlaceColumn:
     pop eax
     pop esi
     ret
+
 ; Takes:
-;   esi: key
-CreateRoundKeys:
-    ; First copy the cipher key for Round 0
-    push esi ;save esi
-    xor eax, eax
-    .nextColumn:
-        mov edi, column1
-        mov esi, [esp]
-        mov edx, 4
-        call GetColumn
-
-        mov esi, column1
-        mov edi, RoundKeys
-        mov edx, 44
-        call PlaceColumn
-
-        inc eax
-    cmp eax, 4
-    jne .nextColumn
-    pop esi ;stack cleanup
-
-    ; Calculate the rest of the Round keys
-    mov eax, 4 ; This is W
-    mov ebx, 4
-    mov edx, 0
-    push eax
-    div ebx
-    ; cmp edx, 0
-    ; jne .NotAFirstColumn
-
+;   ecx: value of eax before the division
+CreateFirstColumn:
+    push ecx
+    push ecx
     mov esi, RConstantMatrix
     mov edi, column1
     mov edx, 10
@@ -133,13 +110,75 @@ CreateRoundKeys:
     mov edi, RoundKeys
     mov edx, 44
     call PlaceColumn
-    inc eax
-
+    pop ecx
     ret
 
+; Takes:
+;   esi: key
+CreateRoundKeys:
+    ; First copy the cipher key for Round 0
+    push esi ;save esi
+    xor eax, eax
+    .nextColumn:
+        mov edi, column1
+        mov esi, [esp]
+        mov edx, 4
+        call GetColumn
 
+        mov esi, column1
+        mov edi, RoundKeys
+        mov edx, 44
+        call PlaceColumn
 
-  ;  ret
+        inc eax
+    cmp eax, 4
+    jne .nextColumn
+    pop esi ;stack cleanup
+
+    ; Calculate the rest of the Round keys
+    mov eax, 4 ; This is W
+    mov ecx, 40
+    .schedule:
+        push ecx
+        mov ebx, 4
+        mov edx, 0
+        mov ecx, eax
+        div ebx
+        cmp edx, 0
+        jne .NotAFirstColumn
+        call CreateFirstColumn 
+        jmp .next
+        .NotAFirstColumn:
+            mov eax, ecx
+            sub eax, 1
+            mov ebx, 0
+            mov esi, RoundKeys
+            mov edi, column1
+            mov edx, 44
+            call GetColumn
+            xor ebx, [column1]
+            
+            
+            sub eax, 3
+            mov esi, RoundKeys
+            mov edi, column1
+            mov edx, 44
+            call GetColumn
+
+            xor ebx, [column1]
+            mov [column1], ebx
+
+            add eax, 4
+            ; Place the column at W[i]
+            mov esi, column1
+            mov edi, RoundKeys
+            mov edx, 44
+            call PlaceColumn
+        .next:
+        inc eax
+        pop ecx
+    loop .schedule
+    ret
 
 PrintRoundKeys:
     mov bl, 0
