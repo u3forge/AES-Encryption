@@ -216,3 +216,36 @@ PrintRoundKeys:
 		.done:
 	loop .print
 	ret
+
+; Takes:
+;   edi: variable to store the round in
+;   eax: the number of the round
+GetRoundKey:
+    push edi
+    mov ebx, 4
+    mul ebx
+    mov edx, eax
+    mov ecx, 4
+    .GetNextColumn:
+        push ecx
+        mov esi, RoundKeys
+        mov edi, column1
+        push edx
+        mov edx, 44
+        call GetColumn
+        pop edx
+        push eax
+        sub eax, edx
+        mov esi, column1
+        mov edi, [esp+0x8]
+        mov ebx, 4
+        push edx
+        mov edx, 4
+        call PlaceColumn
+        pop edx
+        pop eax
+        inc eax
+        pop ecx
+    loop .GetNextColumn
+    pop edi
+    ret
