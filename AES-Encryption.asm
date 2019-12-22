@@ -5,15 +5,22 @@
 %include "Substitution.inc"	; Substitution functions
 %include "Rotation.inc"		; Rotation functions
 %include "ColumnMixing.inc"	; Column mixing functions
+%include "RoundKey.inc"		; Round key generation functions
 global _start
 
 section .data
 message db 0x19, 0xa0, 0x9a, 0xe9, 0x3d, 0xf4, 0xc6, 0xf8, 0xe3, 0xe2, 0x8d, 0x48, 0xbe, 0x2b, 0x2a, 0x08
+key		db 0x2b, 0x28, 0xab, 0x09, 0x7e, 0xae, 0xf7, 0xcf, 0x15, 0xd2, 0x15, 0x4f, 0x16, 0xa6, 0x88, 0x3c
 SubstitutedMessage TIMES 16 db 0
 mixedMessage TIMES 16 db 0
 
 section .text
 _start:
+
+	mov esi, key
+	call CreateRoundKeys
+	mov esi, RoundKeys
+	call PrintRoundKeys
 
 	mov ecx, 16
 	mov esi, message
