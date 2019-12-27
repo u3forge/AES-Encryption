@@ -53,9 +53,10 @@ Encrypt:
         ; call Print4x4Matrix
 
         mov esi, message
+        mov bh,1
         call RotateMessage
-        ; mov esi, message
-        ; call Print4x4Matrix
+         ;mov esi, message
+         ;call Print4x4Matrix
         pop ecx
         cmp ecx, 1
         push ecx
