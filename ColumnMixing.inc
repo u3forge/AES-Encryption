@@ -46,6 +46,16 @@ section .text
         xor dl, dh
         ret
 
+    ; Takes: 
+    ;   dl: value
+    ; Returns:
+    ;   dh: result multiplied by 3
+    AdvancedMultiplyByNine:
+        mov dh, dl
+        shl dl, 3
+        xor dh, dl
+        ret
+
     ; Takes:
     ;   eax: Row
     ;   ebx: Column
