@@ -49,11 +49,74 @@ section .text
     ; Takes: 
     ;   dl: value
     ; Returns:
-    ;   dh: result multiplied by 9
+    ;   dl: result multiplied by 9
     AdvancedMultiplyByNine:
-        mov dh, dl
-        shl dl, 3
-        xor dh, dl
+        mov dh, dl ;x0
+        call AdvancedMultiplyByTwo
+        ; dl now contains x1=x0*2
+        call AdvancedMultiplyByTwo
+        ; dl now contains x2=x1*2
+        call AdvancedMultiplyByTwo
+        ; dl now contains x3=x2*2
+        xor dl, dh
+        ret
+
+    ; Takes: 
+    ;   dl: value
+    ; Returns:
+    ;   dl: result multiplied by 11
+    AdvancedMultiplyBy0B:
+        push eax
+        mov dh, dl      ;x0
+        call AdvancedMultiplyByTwo
+        ;dl now contains x1=x0*2
+        mov al, dl
+        call AdvancedMultiplyByTwo
+        ;dl now contains x2=x1*2
+        call AdvancedMultiplyByTwo
+        ;dl now contains x3=x2*2
+        xor dl, dh
+        xor dl, al
+        pop eax
+        ret
+
+    ; Takes: 
+    ;   dl: value
+    ; Returns:
+    ;   dl: result multiplied by 11
+    AdvancedMultiplyBy0D:
+        push eax
+        mov dh, dl  ;save x0 in dh
+        call AdvancedMultiplyByTwo
+        ;dl now contains x1=x0*2
+        mov al, dl  ;save x1 in al
+        call AdvancedMultiplyByTwo
+        ;dl now contains x2=x1*2
+        mov ah, dl  ;save x2 in ah
+        call AdvancedMultiplyByTwo
+        ;dl now contains x3=x2*2
+        xor dl, dh
+        xor dl, ah
+        pop eax
+        ret
+
+    ; Takes: 
+    ;   dl: value
+    ; Returns:
+    ;   dl: result multiplied by 11
+    AdvancedMultiplyBy0E:
+        push eax
+        call AdvancedMultiplyByTwo
+        ;dl now contains x1=x0*2
+        mov al, dl  ;save x1 in al
+        call AdvancedMultiplyByTwo
+        ;dl now contains x2=x1*2
+        mov ah, dl  ;save x2 in ah
+        call AdvancedMultiplyByTwo
+        ;dl now contains x3=x2*2
+        xor dl, al
+        xor dl, ah
+        pop eax
         ret
 
     ; Takes:
