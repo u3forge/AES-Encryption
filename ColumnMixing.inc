@@ -242,8 +242,11 @@ section .text
 
     GaliosDecryption:
     push eax 
-    mov eax,galiosFieldInverse
-    mov [galiosField],eax 
+    mov ecx, 16
+    cld
+    mov esi, galiosFieldInverse
+    mov edi, galiosField
+    rep movsb
     pop eax
 
     mov DWORD [galiosIndexI],0
