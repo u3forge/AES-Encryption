@@ -47,8 +47,10 @@ Encrypt:
         mov ecx, 16
         mov esi, message
         mov edi, message
+        push ebx
+        mov bh,1
         call SubstituteMessage
-        
+        pop ebx
         ; mov esi, message
         ; call Print4x4Matrix
 

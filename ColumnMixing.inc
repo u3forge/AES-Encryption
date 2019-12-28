@@ -49,7 +49,7 @@ section .text
     ; Takes: 
     ;   dl: value
     ; Returns:
-    ;   dh: result multiplied by 3
+    ;   dh: result multiplied by 9
     AdvancedMultiplyByNine:
         mov dh, dl
         shl dl, 3

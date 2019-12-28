@@ -5,7 +5,7 @@ section .text
 ;   edx: Row Start index
 ;   esi: Source and Desination message
 ;   edi: Number of rotations
-;   bh : 'e' for encryption  'd' for decryption
+;   bh : 1 for encryption  2 for decryption
 RotateMessage:
 
 	mov edx,4
