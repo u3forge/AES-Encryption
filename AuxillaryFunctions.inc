@@ -17,3 +17,35 @@ XOR4x4Matrices:
     pop ecx
     pop eax
     ret
+
+; Takes:
+;   eax: Hex Value
+; Returns:
+;   edx: Decimal Value with the same digits
+GetDecimalValueFromHex:
+    xor edx, edx
+    xor ebx, ebx
+    mov ebx, 1
+    .cont:
+        mov cl, al
+        and cl, 0x0F
+        push eax
+        push edx
+        movzx eax, cl
+        mul ebx
+        pop edx
+        add edx, eax
+        pop eax
+        shr eax, 4
+        push eax
+        xchg eax, ebx
+        mov ebx, 10
+        push edx
+        mul ebx
+        pop edx
+        xchg eax, ebx
+        pop eax
+        cmp eax, 0
+    jne .cont
+    ret
+    

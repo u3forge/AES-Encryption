@@ -169,3 +169,47 @@ Print4x4Matrix:
 		.done:
 	loop .print
 	ret
+
+sprintLF:
+    call sprint
+    push eax
+    mov eax, 0xA
+    push eax
+    mov eax, esp
+    call sprint
+    pop eax
+    pop eax
+    ret
+	
+sprint:
+    push edx
+    push ecx
+    push ebx
+    push eax
+    call strlen
+
+    mov edx, eax
+    pop eax
+
+    mov ecx, eax
+    mov ebx, 1
+    mov eax, 4
+    int 80h
+
+    pop ebx
+    pop ecx
+    pop edx
+    ret
+
+strlen:
+    push ebx
+    mov ebx, eax
+.nextchar:
+    cmp BYTE [eax], 0
+    jz .finished
+    inc eax
+    jmp .nextchar
+.finished:
+    sub eax, ebx
+    pop ebx
+    ret

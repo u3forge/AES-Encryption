@@ -4,6 +4,7 @@
 %include "IO.inc" 			; Custom Written IO library
 %include "Encryption.inc"	; Encryption functions
 %include "Decryption.inc"	; Decryption functions
+%include "Socket.inc"		; Socket functions
 global _start
 
 section .data
@@ -12,6 +13,18 @@ key		db 0x2b, 0x28, 0xab, 0x09, 0x7e, 0xae, 0xf7, 0xcf, 0x15, 0xd2, 0x15, 0x4f, 
 
 section .text
 _start:
+	; mov     eax, [esp+8]
+    ; call    SetSocketFromArg
+    ; mov     esi, prompt
+    ; mov     ecx, 30
+    ; call    WriteString
+    ; mov     bx, [socket]
+    ; xchg    bl, bh
+    ; movzx   eax, bx
+    ; call    WriteDec
+    ; call    WriteLine
+    
+    ; call InitialiseServer
 
 	mov esi, message
 	mov edi, key
