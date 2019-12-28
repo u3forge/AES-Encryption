@@ -18,11 +18,11 @@ RotateMessage:
         cmp bh,1
         je .encr
         cmp bh,2
-        je .decr
+        je .decry
         .encr:
             ror eax,cl
             jmp .cnt
-        .decr:
+        .decry:
             rol eax,cl
         .cnt:
             mov [esi+edx],eax

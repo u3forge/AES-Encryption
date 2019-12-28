@@ -1,5 +1,7 @@
 %include "SBOX.inc" ; File contining SBOX and its functions
 %include "SBOXInverse.inc"
+section .data 
+tmpbh db 0
 section .text
     ;Takes:
     ;   cl: value
@@ -24,30 +26,44 @@ section .text
     ;   esi: source message
     ;   edi: destination message
     ;   ecx: length of the message
-    ;   bh : 1 encryption 2 decryption 
     ;Returns:
     ;   edi: source message substituted by SBOX
     SubstituteMessage:
         .substitute:
+            push ecx
+            mov [tmpbh],bh
+            mov cl, [esi]
+            call GetLowerNibble
+            call GetHigherNibble
+            movzx eax, bh
+            movzx ebx, bl
+            call GetSBOXByte    
+            mov BYTE [edi], dl
+            inc esi
+            inc edi
+            pop ecx
+	    loop .substitute
+        ret
+
+    ;Takes:
+    ;   esi: source message
+    ;   edi: destination message
+    ;   ecx: length of the message
+    ;   bh : 1 encryption 2 decryption 
+    ;Returns:
+    ;   edi: source message substituted by SBOX
+    SubstituteMessageInverse:
+        .substituteInverse:
             push ecx
             mov cl, [esi]
             call GetLowerNibble
             call GetHigherNibble
             movzx eax, bh
             movzx ebx, bl
-            cmp bh,1
-            je .enc
-            cmp bh,2
-            je .decr
-            .enc:
-                call GetSBOXByte
-                jmp .cont
-            .decr:
-                call GetSBOXInverseByte
-            .cont:    
-                mov BYTE [edi], dl
-                inc esi
-                inc edi
-                pop ecx
-	        loop .substitute
-            ret
+            call GetSBOXInverseByte   
+            mov BYTE [edi], dl
+            inc esi
+            inc edi
+            pop ecx
+	    loop .substituteInverse
+        ret

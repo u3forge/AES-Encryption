@@ -2,29 +2,12 @@
 %include "Rotation.inc"		; Rotation functions
 %include "ColumnMixing.inc"	; Column mixing functions
 %include "RoundKey.inc"		; Round key generation functions
+%include "AuxillaryFunctions.inc" 
 section .data
 mixedMessage TIMES 16 db 0
 currentRoundKey TIMES 16 db 0
 
 section .text
-
-; Takes:
-;   esi: matrix 1
-;   edi: matrix 2
-; XORs the matrices and places them in matrix 2
-XOR4x4Matrices:
-    push eax
-    push ecx
-    mov ecx, 16
-    ._xor:
-        mov al, BYTE [esi]
-        xor BYTE [edi], al
-        inc edi
-        inc esi
-    loop ._xor
-    pop ecx
-    pop eax
-    ret
 
 ; Takes:
 ;   esi: message

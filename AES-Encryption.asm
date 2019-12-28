@@ -3,6 +3,7 @@
 ; Or just run make like a chad
 %include "IO.inc" 			; Custom Written IO library
 %include "Encryption.inc"	; Encryption functions
+%include "Decryption.inc"	; Decryption functions
 global _start
 
 section .data
@@ -16,6 +17,7 @@ _start:
 	mov edi, key
 	call Encrypt
 
+	call Decrypt
 	mov esi, message
 	mov ecx, 16
 	call Print4x4Matrix
