@@ -20,7 +20,7 @@ InitialiseServer:
     mov eax, 102            ; invoke SYS_SOCKETCALL (kernel opcode 102)
     int 80h                 ; call the kernel
     
-    ;Bing the the server to the socket at localhost
+    ;Bind the server to the socket at localhost
     mov edi, eax            ; move return value of SYS_SOCKETCALL into edi (file descriptor for new socket, or -1 on error)
     push DWORD 0x00000000    ; move 0 dec onto the stack IP ADDRESS
     push WORD [socket]       ; move 9001 dec onto stack PORT
