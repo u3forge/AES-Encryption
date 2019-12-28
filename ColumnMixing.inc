@@ -83,7 +83,7 @@ section .text
     ; Takes: 
     ;   dl: value
     ; Returns:
-    ;   dl: result multiplied by 11
+    ;   dl: result multiplied by 13
     AdvancedMultiplyBy0D:
         push eax
         mov dh, dl  ;save x0 in dh
