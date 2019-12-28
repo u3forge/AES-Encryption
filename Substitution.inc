@@ -48,8 +48,7 @@ section .text
     ;Takes:
     ;   esi: source message
     ;   edi: destination message
-    ;   ecx: length of the message
-    ;   bh : 1 encryption 2 decryption 
+    ;   ecx: length of the message 
     ;Returns:
     ;   edi: source message substituted by SBOX
     SubstituteMessageInverse:

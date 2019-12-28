@@ -32,6 +32,7 @@ _start:
 
 	call Decrypt
 	mov esi, message
+
 	mov ecx, 16
 	call Print4x4Matrix
 	

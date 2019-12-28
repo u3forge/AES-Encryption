@@ -3,6 +3,11 @@ galiosField db  2, 3, 1, 1,
             db  1, 2, 3, 1,
             db  1, 1, 2, 3,
             db  3, 1, 1, 2
+
+galiosFieldInverse db 0x0E, 0x0B, 0x0D, 0x09,
+                   db 0x09, 0x0E, 0x0B, 0x0D,
+                   db 0x0D, 0x09, 0x0E, 0x0B,
+                   db 0x0B, 0x0D, 0x09, 0x0E
 galiosIndexI dd 0
 galiosIndexJ dd 0
 messageIndexI dd 0
@@ -152,11 +157,47 @@ section .text
 
             .three: 
             cmp dl, 3
-            jne .one
+            jne .nine
             mov dl, [esi + eax]
             call AdvancedMultiplyByThree
             movzx edx, dl
             xor ecx, edx
+            jmp .done
+
+            .nine:
+            cmp dl,9
+            jne .zeroB
+            mov dl, [esi + eax]
+            call AdvancedMultiplyByNine
+            movzx edx,dl
+            xor ecx,edx
+            jmp .done
+
+            .zeroB:
+            cmp dl,0x0B
+            jne .zeroD
+            mov dl, [esi + eax]
+            call AdvancedMultiplyBy0B
+            movzx edx,dl
+            xor ecx,edx
+            jmp .done
+            
+            .zeroD:
+            cmp dl,0x0D
+            jne .zeroE
+            mov dl, [esi + eax]
+            call AdvancedMultiplyBy0D
+            movzx edx,dl
+            xor ecx,edx
+            jmp .done
+
+            .zeroE:
+            cmp dl,0x0E
+            jne .one
+            mov dl, [esi + eax]
+            call AdvancedMultiplyBy0E
+            movzx edx,dl
+            xor ecx,edx
             jmp .done
 
             .one:
@@ -197,3 +238,17 @@ section .text
         cmp ebx, 4
         jl .nextColumn
         ret
+
+
+    GaliosDecryption:
+    push eax 
+    mov eax,galiosFieldInverse
+    mov [galiosField],eax 
+    pop eax
+
+    mov DWORD [galiosIndexI],0
+    mov DWORD [galiosIndexJ],0
+    mov DWORD [messageIndexI],0
+    mov DWORD [messageIndexJ],0
+
+    ret
