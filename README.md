@@ -36,3 +36,8 @@ The program has 2 modes, encryption and decryption.
 		0x28 0xA5 0x15 0x3A
 
 - When decrypting, you have to give it the 16 bytes you were given as the encrypted message and the key. The encrypted message is give as 16 2-digit hex bytes, using lowercase characters for a-f.
+
+## More info on AES
+
+- [AES Explained (Advanced Encryption Standard) - Computerphile](https://youtu.be/O4xNJsjtN6E)
+- [AES Rijndael Cipher explained as a Flash animation](https://youtu.be/gP4PqVGudtg)
