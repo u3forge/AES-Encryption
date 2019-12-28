@@ -1,5 +1,5 @@
 section .data
-response db 'HTTP/1.1 200 OK', 0Dh, 0Ah, 'Content-Type: text/html', 0Dh, 0Ah, 'Content-Length: 16', 0Dh, 0Ah, 0Dh, 0Ah, 'ABCDABCDABCDABCD', 0Dh, 0Ah, 0h
+response db 'HTTP/1.1 200 OK', 0Dh, 0Ah, 'Content-Type: text/html', 0Dh, 0Ah, 'Content-Length: 16', 0Dh, 0Ah, 0Dh, 0Ah, 'TestMessage12345', 0Dh, 0Ah, 0h
 prompt   db 'Running on localhost at port: '
 section .bss
 buffer resb 255,    ; variable to store request headers
@@ -62,7 +62,7 @@ InitialiseServer:
 
     jmp .accept             ; jmp in parent process to _accept
     
-    ;Read the sent request
+    ;Read the received request
     .read:
     mov edx, 255            ; number of bytes to read (we will only read the first 255 bytes for simplicity)
     mov ecx, buffer         ; move the memory address of our buffer variable into ecx

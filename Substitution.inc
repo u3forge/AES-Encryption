@@ -1,7 +1,6 @@
 %include "SBOX.inc" ; File contining SBOX and its functions
 %include "SBOXInverse.inc"
-section .data 
-tmpbh db 0
+
 section .text
     ;Takes:
     ;   cl: value
@@ -31,7 +30,6 @@ section .text
     SubstituteMessage:
         .substitute:
             push ecx
-            mov [tmpbh],bh
             mov cl, [esi]
             call GetLowerNibble
             call GetHigherNibble

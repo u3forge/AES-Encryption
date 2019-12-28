@@ -24,7 +24,7 @@ ReadChar:
    	mov eax, 3		;sys_read systemcall
    	mov ebx, 0		;STDIN file descriptor
    	mov ecx, esp	;move the allocated dword address to ecx
-   	mov edx, 1		;Reading one byte
+   	mov edx, 2		;Reading one byte
    	int 80h			;Invoke the syscall
 
 	mov al, BYTE [esp] 	;Move the read value into al
@@ -103,6 +103,38 @@ WriteDec:
 	.done:
 	ret
 
+; Returns:
+;	al: value of the hex byte
+ReadHexByte:
+	push ecx
+	push esi
+	sub esp, 4		;allocate a dword on the stack
+   	mov eax, 3		;sys_read systemcall
+   	mov ebx, 0		;STDIN file descriptor
+   	mov ecx, esp	;move the allocated dword address to ecx
+   	mov edx, 3		;Reading 2 bytes
+   	int 80h			;Invoke the syscall
+	mov esi, esp
+
+	mov ecx, 2
+	.nextbyte:
+	cmp BYTE[esi], '9'
+	jle  .zeroto9
+		sub BYTE[esi], 0x27
+	.zeroto9:
+	sub BYTE[esi], 0x30
+	inc esi
+	loop .nextbyte
+	
+	movzx ax, BYTE [esp] 	;Move the read value into ax
+	shl	ax, 8
+	mov	al, BYTE [esp+1]
+	shl al, 4
+	shr ax, 4 
+	add esp, 4			;Clean up the stack
+	pop esi
+	pop ecx
+	ret
 ; Takes:
 ;	eax: value
 ; Prints the value in hexa (base-16)

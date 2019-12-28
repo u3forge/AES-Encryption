@@ -239,7 +239,7 @@ section .text
         jl .nextColumn
         ret
 
-
+    ;Prepares the galios field during the decryption phase
     GaliosDecryption:
     push eax 
     mov ecx, 16

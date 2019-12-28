@@ -1,8 +1,8 @@
-%include "Substitution.inc"	; Substitution functions
-%include "Rotation.inc"		; Rotation functions
-%include "ColumnMixing.inc"	; Column mixing functions
-%include "RoundKey.inc"		; Round key generation functions
-%include "AuxillaryFunctions.inc" 
+%include "Substitution.inc"	        ; Substitution functions
+%include "Rotation.inc"		        ; Rotation functions
+%include "ColumnMixing.inc"	        ; Column mixing functions
+%include "RoundKey.inc"		        ; Round key generation functions
+%include "AuxillaryFunctions.inc"   ; Auxillary misc. functions
 section .data
 mixedMessage TIMES 16 db 0
 currentRoundKey TIMES 16 db 0
