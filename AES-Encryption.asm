@@ -11,7 +11,7 @@ section .data
 message  TIMES 16 db 0
 key		 TIMES 16 db 0
 PromptMessage 	db 	"Enter the message: ",0
-PromptHex		db 	"Enter the 16 hex bytes without leading '0x', pad the bytes to be 2 digits wide:", 0xA
+PromptHex		db 	"Enter the 16 hex bytes as lowercase without leading '0x', pad the bytes to be 2 digits wide:", 0xA
 PromptKey		db	"Enter the key: ", 0
 PromptDec		db 	"1.Encrypt", 0xA, "2.Decrypt", 0xA
 section .text
@@ -55,7 +55,7 @@ _start:
 	.decrypt:
 	;Print promp for encrypted message
 	mov esi, PromptHex
-	mov ecx, 80
+	mov ecx, 93
 	call WriteString
 	;Read 16 bytes
 	mov esi, message
