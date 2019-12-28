@@ -4,7 +4,6 @@ RConstantMatrix db 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36
 
 RoundKeys TIMES 176 db 0
 ; 4*4*11 Matrix for all of the round keys.
-; TODO: Optimise this shit :D 
 column1 db 1,1,1,1
 column2 db 2,2,2,2
 
