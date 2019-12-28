@@ -8,6 +8,8 @@ section .text
 ;   edi: input key
 ; decrypts the message in esi
 Decrypt:
+    mov esi, edi
+    call CreateRoundKeys
     ;First round
     ; Add last round key
     mov eax,10
@@ -54,7 +56,7 @@ Decrypt:
     mov edi, message
     mov ecx, 16
     rep movsb
-    
+
     pop ecx  
 
     loop .rounds

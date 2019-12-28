@@ -8,9 +8,11 @@
 global _start
 
 section .data
-message db 0x32, 0x88, 0x31, 0xe0, 0x43, 0x5a, 0x31, 0x37, 0xf6, 0x30, 0x98, 0x07, 0xa8, 0x8d, 0xa2, 0x34
-key		db 0x2b, 0x28, 0xab, 0x09, 0x7e, 0xae, 0xf7, 0xcf, 0x15, 0xd2, 0x15, 0x4f, 0x16, 0xa6, 0x88, 0x3c
-
+message  TIMES 16 db 0
+key		 TIMES 16 db 0
+PromptMessage 	db 	"Enter the message: ",0
+PromptKey		db	"Enter the key: ", 0
+PromptDec		db 	"1.Encrypt", 0xA, "2.Decrypt", 0xA
 section .text
 _start:
 	; mov     eax, [esp+8]
@@ -25,17 +27,41 @@ _start:
     ; call    WriteLine
     
     ; call InitialiseServer
+	mov esi, PromptMessage
+	mov ecx, 20
+	call WriteString
 
+	mov esi, message
+	mov ecx, 18
+	call ReadString
+
+	mov esi, PromptKey
+	mov ecx, 15
+	call WriteString
+
+	mov esi, key
+	mov ecx, 17
+	call ReadString
+
+	mov esi, PromptDec
+	mov ecx, 20
+	call WriteString
+	
+	call ReadChar
+	cmp al, 0x31
+	jne .decrypt
 	mov esi, message
 	mov edi, key
 	call Encrypt
-
-	call Decrypt
+	jmp .done
+	.decrypt:
 	mov esi, message
-
+	mov edi, key
+	call Decrypt
+	.done:
+	mov esi, message
 	mov ecx, 16
-	call Print4x4Matrix
-	
+	call WriteString
 	;Return zero
 	mov eax, 0x1
 	mov ebx, 0
