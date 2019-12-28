@@ -17,6 +17,7 @@ Decrypt:
 	mov edi, message
 	call XOR4x4Matrices
 
+    call Debug
     mov ecx,9
 
     .rounds:
@@ -26,20 +27,28 @@ Decrypt:
     mov bh,2
     call RotateMessage
 
+
     ;inverse sub
-    mov edi, esi
+    mov edi, message
+    mov esi, message
     mov ecx,16
     call SubstituteMessageInverse
     
+    call Debug
+
     ;inverse Add round key
-    push eax
+    pop ecx
+    
     mov eax,ecx
+    push ecx
     mov edi,rkey
     call GetRoundKey
-    pop eax
+
     mov esi,rkey
     mov edi,message
     call XOR4x4Matrices
+    
+    call Debug
     
     ;inverse mix coulumns
     call GaliosDecryption
@@ -51,6 +60,8 @@ Decrypt:
     mov edi, message
     mov ecx, 16
     rep movsb
+
+    call Debug
 
     pop ecx  
 
@@ -70,4 +81,10 @@ Decrypt:
 	mov edi, message
 	call XOR4x4Matrices    
 
+    ret
+
+Debug:
+    mov esi, message
+    call Print4x4Matrix
+    call WriteLine
     ret
